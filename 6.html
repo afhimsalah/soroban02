@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <title></title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Chakra+Petch" rel="stylesheet"><style>
+	
+	
+      body, html {
+        font-family: 'Chakra Petch', sans-serif;
+      }
+      .hidden {
+        display: none
+      }
+      span.bg-dark {
+        width: 100px
+      }
+      iframe#virtualSoroban {
+				position: absolute;
+				left: 15px;
+				top: 100px;
+				padding: 15px 5px;
+				background-color: #fff;
+				border-width: 20px 1px 1px 1px;
+				border-style: solid;
+				border-color: #ddd;
+        z-index: 5005
+			}
+    </style>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script src="https://www.sorobanexam.org/static/js/jquery-ui-1.12.1.custom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <script>
+			$(document).ready(function() {
+          var $input,$tab,val,index,timer,mn,sc;
+					$('#tobehidden').hide();
+					$('#showSoroban').click(function(e) {
+						e.preventDefault();
+						if ($('#virtualSoroban').is(':visible')) {
+							$('#virtualSoroban').hide();
+							$('#showSoroban').html('<a href="#">Montrer le soroban virtuel</a>');
+						} else {
+							if (!$('#virtualSoroban').attr('src')) {
+								var sorobanURL = '/soroban-only.html?greyout=1&colorize=0&timeout=1000&size=19'
+
+								sorobanURL = 'https://www.sorobanexam.org'+sorobanURL;
+
+								$('#virtualSoroban').attr('src', sorobanURL);
+							}
+							$('#virtualSoroban').show();
+							$('#showSoroban').html('<a href="#">Cacher le soroban virtuel</a><span style="font-size:0.8em"> (Note: Utiliser la barre grise pour déplacer le soroban virtuel)</span>');
+						}
+					});
+					$('#virtualSoroban').draggable({iframeFix: true});
+          function check() {
+            total = 0;
+            points = 1;
+            $("#check").parent().addClass("d-none").next().removeClass("d-none");
+            $("#result").removeClass("d-none").siblings().addClass("d-none");
+            $(".tab-pane").each(function(i) {
+              if (i > 10) {
+                points = 1;
+              }
+              $input = $(this).find("input");
+              $td = $("#result").find("tbody tr:eq("+i+")").find("td:last");
+              if ($input.val() == $td.text()) {
+                total += points;
+                $td.prev().html($input.val()+'<i class="fas fa-check text-success ml-2"></i>');
+              } else {
+                $td.prev().html($input.val()+'<i class="fas fa-times-circle text-danger ml-2"></i>');
+              }
+            });
+            total /= 1;
+            if (total < 1) {
+              $("#result").append("<p class='lead font-weight-bold text-danger text-center'>Désolais, réessayez encore une fois 😢  </p>");
+            } else {
+              $("#result").append("<p class='lead font-weight-bold text-success text-center'>Test réussi 😊</p>");
+            }
+            $("#result").find("tbody tr:last").find("td:first").text(total);
+          }
+          mn = 1;
+          sc = 0;
+          timer = setInterval(function(){
+            sc--;
+            if (sc < 0) {
+              mn--;
+              if (mn < 0) {
+                sc = 0;
+                clearInterval(timer);
+                check();
+              } else {
+                sc = 59;
+                if (mn < 10) {
+                  mn = "0"+mn;
+                }
+                $("span#mn").text(mn);
+              }
+            }
+            if (sc < 10) {
+              sc = "0"+sc;
+            }
+            $("span#sc").text(sc);
+          },1000);
+          $(".next").on("click", function(){
+            $tab = $(this).parents(".tab-pane");
+            index = $tab.index();
+            $tab.removeClass("show active").next().addClass("show active").find("input").focus();
+            $(".btn-sm:eq("+index+")").removeClass("active");
+            $(".btn-sm:eq("+(index+1)+")").addClass("active");
+          });
+          $('#check').on('click', function () {
+            check();
+          });
+          $('#reset').on('click', function () {
+            location.reload();
+          });
+          $('a[data-toggle="pill"]').on('show.bs.tab', function (e) {
+            $(".btn-sm").removeClass('active');
+          });
+        });
+		</script>
+  </head>
+  <body class="bg-light text-dark">
+    <div class="container pt-3">
+      <iframe id="virtualSoroban" title="Use the grey top bar to drag around the virtual soroban" class="hidden" height="200" width="676"></iframe>
+      <div class="row no-gutters">
+        <p class="lead text-justify" id="tobehidden"><span class="red" style="padding:3px">You need javascript to use this interactive page</span></p>
+      </div>
+      <h1 class="h1 text-center font-weight-bold bg-dark text-light mt-3"><span id="mn">01</span>:<span id="sc">00</span></h1>
+      <div class="row no-gutters align-items-center">
+        
+       
+        <div class="tab-content col-8 col-sm-10 col-md-6 offset-md-2" id="ex-content">
+          <div class="tab-pane fade text-center px-3 show active" id="ex_01" role="tabpanel" aria-labelledby="ex_01-tab">
+            <h4 class="h4 font-weight-bold">Addition et Soustraction simple</h4>
+            <h4 class="h4 font-weight-bold">Je calcule en utilisant mon boulier</h4>
+
+            <div>
+              <span class="font-weight-bold d-block bg-dark text-light py-1 mx-auto mb-2">2</span>
+              <span class="font-weight-bold d-block bg-dark text-light py-1 mx-auto mb-2">+2</span>
+              <span class="font-weight-bold d-block bg-dark text-light py-1 mx-auto mb-2">-2</span>
+             
+            </div>
+            
+          
+         
+            <div class="input-group">
+              <input type="number" class="form-control bg-transparent border-dark text-dark text-center rounded-0">
+              <div class="input-group-append">
+                <button class="btn btn-outline-dark rounded-0 d-none" type="button"><i class="fas fa-arrow-right"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 d-none" id="result">
+          <div class="table-responsive">
+            <table class="table table-sm table-striped text-center">
+              <thead>
+                <tr class="bg-info">
+                  <th>Question</th>
+                  <th>Votre Réponse</th>
+                  <th>Correction</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>01</th>
+                  <td></td>
+                  <td>2</td>
+                </tr>
+                
+                <tr class="bg-info">
+                  <th>Total</th>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <hr class="bg-dark">
+      <p class="text-center"><button id="check" type="button" class="btn btn-outline-dark rounded-0" style="box-shadow: none">Vérifier les réponses</button></p>
+      <p class="text-center d-none"><button id="reset" type="button" class="btn btn-outline-dark rounded-0" style="box-shadow: none">Refaire le test</button></p>
+	  
+
+	  
+     <input type="submit"   class="btn btn-outline-dark rounded-0" style="box-shadow: none" value="Suivant"   onClick="myFunction()"/>
+    <script>
+      function myFunction() {
+        window.location.href="http://soroban.rf.gd/7.html";
+      }
+    </script> 
+	  
+	  
+	  
+	  
+	  
+    </div>
+  </body>
+</html>
