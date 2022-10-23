@@ -1,0 +1,8 @@
+body,html {
+	font-family: times, sans-serif;
+	height: 100vh;
+	font-size: 14px;
+}
+#bd {
+  font-size: 4.5rem;
+}
