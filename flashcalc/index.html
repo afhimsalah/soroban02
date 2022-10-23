@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <title>Flash calc</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/animate.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/app.js"></script>
+</head>
+<body class="bg-warning text-dark">
+<audio id="beep">
+    <source src="beep.mp3" type="audio/mpeg">
+    <source src="beep.ogg" type="audio/mpeg">
+    <source src="beep.wav" type="audio/mpeg">
+</audio>
+<div class="container h-100 p-0">
+    <div class="row justify-content-center no-gutters h-100 text-center font-weight-bold">
+        <div class="col-12 align-self-top">
+            <div class="row pt-3 h-25" id="row">
+                <div class="col-4 offset-4 text-center">
+                    <img src="logo.png" class="center-block" width="100" alt="logo">
+                </div>
+                <div class="col-4 text-right">
+                    <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+                        <button id="fr" class="btn btn-outline-dark rounded-0 active" style="box-shadow:none">FR</button>
+                        <button id="ar" class="btn btn-outline-dark rounded-0" style="box-shadow:none">AR</button>
+                        <button id="en" class="btn btn-outline-dark rounded-0" style="box-shadow:none">EN</button>
+                    </div>
+                </div>
+                <div class="w-100 my-3"></div>
+                <div class="col-4">
+                    <label for="dig">Chiffres</label>
+                    <input id="dig" class="form-control text-center font-weight-bold rounded-0 bg-transparent border-dark" type="number" min="1" max="8" value="1" style="box-shadow: none">
+                </div>
+                <div class="col-4">
+                    <label for="num">Nombres</label>
+                    <input id="num" class="form-control text-center font-weight-bold rounded-0 bg-transparent border-dark" type="number" value="4" style="box-shadow: none">
+                </div>
+                <div class="col-4">
+                    <label for="spd">Millisecondes</label>
+                    <input id="spd" class="form-control text-center font-weight-bold rounded-0 bg-transparent border-dark" type="number" min="0" max="50000" step="1" value="1000" style="box-shadow: none">
+                </div>
+                <div id="bd" class="w-100 text-center font-weight-bold pt-5"></div>
+                <button id="start" type="button" class="btn btn-lg btn-outline-dark rounded-0 px-5 mx-auto mt-5" style="box-shadow: none">Commencer</button>
+            </div>
+        </div>
+        <div class="col-12 align-self-end">
+            <div class="w-100">Copyright &copy; 2018</div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
